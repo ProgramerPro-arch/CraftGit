@@ -1,21 +1,100 @@
-MIT License
+# CraftGit Attribution & Commercial License v1.0
 
-Copyright (c) 2026 ProgramerPro-arch
+Copyright (c) 2026 Piotrekos69
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## 1. Permission
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Permission is granted to use, copy, modify, fork, branch, and distribute the Software for **non-commercial purposes**, provided that all conditions of this license are followed.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## 2. Attribution
+
+Any fork, branch, derivative work, modified version, redistribution, or project containing a substantial portion of the Software must retain clear attribution to the original author.
+
+The following information must be preserved where reasonably possible:
+
+* Original author: **Piotrekos69**
+* Original project: **CraftGit**
+* Original source repository or project page
+
+Attribution must not be removed, hidden, or intentionally obscured.
+
+If a derivative project is based on another fork, branch, or derivative work, the existing attribution chain must also be preserved.
+
+## 3. Commercial Use
+
+**Commercial use is not permitted without prior written permission from the copyright holder.**
+
+Commercial use includes, but is not limited to:
+
+* selling the Software or a derivative work;
+* including the Software in a paid product or service;
+* using the Software as part of a commercial service;
+* distributing the Software as part of a product that is sold for money;
+* using the Software to directly provide a paid service.
+
+Permission for commercial use may be requested from the copyright holder.
+
+The copyright holder may grant, refuse, limit, or revoke permission at their discretion.
+
+## 4. Requesting Commercial Permission
+
+Commercial permission may be requested through:
+
+* **E-mail:** piotrekos69s@gmail.com
+* **Discord:** Piotrekos69
+
+Permission must be explicitly granted by the copyright holder.
+
+Silence, lack of response, or an unanswered request does not constitute permission.
+
+Permission may be granted in writing through e-mail or Discord.
+
+The copyright holder may impose additional conditions when granting commercial permission.
+
+## 5. Modifications
+
+Modification of the Software is permitted for non-commercial purposes.
+
+Modified versions must clearly indicate that they are modified versions of CraftGit.
+
+A modified version must not falsely claim to be the official CraftGit project or imply endorsement by the original author.
+
+## 6. Redistribution
+
+Non-commercial redistribution is permitted provided that:
+
+1. this license is included;
+2. the required attribution is preserved;
+3. the software is not presented as an official product of the original author;
+4. no commercial use occurs without prior permission.
+
+## 7. Forks and Branches
+
+Forks and branches are permitted for non-commercial purposes.
+
+A fork or branch must retain attribution to the original author and must not remove the existing attribution chain.
+
+If code from multiple CraftGit-derived projects is combined, reasonable attribution must be provided for each relevant source.
+
+## 8. Trademarks and Branding
+
+This license does not grant permission to use the CraftGit name, logos, or branding in a manner that suggests official affiliation or endorsement.
+
+## 9. No Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+
+THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+## 10. License
+
+This license applies to the Software unless a separate written agreement has been provided by the copyright holder.
+
+The copyright holder reserves the right to release future versions of CraftGit under different licensing terms.
+
+---
+
+### Required Attribution
+
+> CraftGit by Piotrekos69
+> This project is derived from the original CraftGit project.
