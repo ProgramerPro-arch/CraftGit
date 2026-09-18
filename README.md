@@ -1,28 +1,18 @@
-<div align="center">
-
 # CraftGit
 
-**Version control for Minecraft instances.**
+### Version control for Minecraft instances — and any folder.
 
-[![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python\&logoColor=white)](https://www.python.org/)
-[![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey?logo=windows)](#requirements)
-[![Status](https://img.shields.io/badge/Status-Pre--release-orange)](#project-status)
-[![GUI](https://img.shields.io/badge/GUI-pywebview-blue)](#interface)
-[![License](https://img.shields.io/badge/License-Custom-red)](#license)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python\&logoColor=white)](https://www.python.org/)
+[![pywebview](https://img.shields.io/badge/GUI-pywebview-2B2B2B)](https://pywebview.flowrl.com/)
+[![Google Drive](https://img.shields.io/badge/Google%20Drive-optional-4285F4?logo=google-drive\&logoColor=white)](https://drive.google.com/)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?logo=windows\&logoColor=white)](https://www.microsoft.com/windows)
+[![Status](https://img.shields.io/badge/Status-Pre--release-orange)](https://github.com/ProgramerPro-arch/CraftGit)
 
-</div>
+CraftGit is a local version-control and snapshot system designed primarily for Minecraft instances.
 
----
+It allows you to create named snapshots, compare file changes, restore previous states, automatically create safety backups before restoration, and optionally upload snapshots to Google Drive.
 
-## About
-
-CraftGit is a local version control system designed specifically for Minecraft instances.
-
-It creates snapshots of selected Minecraft files and directories, allowing changes to be reviewed and previous states to be restored without manually copying an entire instance.
-
-CraftGit combines a Python backend with a desktop interface built using HTML, CSS, JavaScript, and pywebview.
-
-The project is primarily designed for modded Minecraft instances.
+CraftGit is currently in active development and is **not yet an official public release**.
 
 ---
 
@@ -32,19 +22,101 @@ The project is primarily designed for modded Minecraft instances.
 * Snapshot restoration
 * Automatic backup before restoration
 * File change detection
-* Detection of added and removed files
-* SHA-256 hashing
+* Detection of added files
+* Detection of removed files
+* SHA-256 file hashing
 * Local snapshot storage
+* Backup management
 * Minecraft-specific file tracking
+* Generic folder support
 * Desktop GUI
-* CLI support
+* CLI/backend architecture
+* Optional Google Drive integration
+* Automatic Google Drive uploads
+* Manual Google Drive uploads
+* Configurable remote folder
+* Persistent application settings
 * Planned Windows `.exe` distribution
 
 ---
 
-## Tracked Files
+## How it works
 
-The default configuration tracks:
+CraftGit stores its repository data inside a hidden `.craftgit` directory in the selected folder.
+
+Example:
+
+```text
+MyMinecraftInstance/
+├── mods/
+├── config/
+├── resourcepacks/
+├── shaderpacks/
+├── datapacks/
+├── options.txt
+├── servers.dat
+└── .craftgit/
+    ├── snapshots/
+    ├── backups/
+    └── ...
+```
+
+CraftGit does not require the selected folder to be a Minecraft instance.
+
+Any normal directory can be used as a repository.
+
+---
+
+## Snapshots
+
+A snapshot is a point-in-time copy of the tracked files.
+
+Example:
+
+```text
+Before Mod Update
+After Mod Update
+Working Configuration
+Shader Test
+Clean Instance
+```
+
+Snapshots can be:
+
+* created
+* listed
+* restored
+* deleted
+* uploaded to Google Drive
+
+Before restoring a snapshot, CraftGit creates a backup of the current state.
+
+This makes it possible to return to the state that existed immediately before the restoration.
+
+---
+
+## File change detection
+
+CraftGit calculates SHA-256 hashes for files and uses them to detect changes.
+
+The status system can identify:
+
+```text
+Added
+Removed
+Modified
+Unchanged
+```
+
+This allows changes between the current directory and the latest snapshot to be identified without relying only on timestamps.
+
+---
+
+## Minecraft support
+
+CraftGit is designed with Minecraft instances in mind.
+
+Common Minecraft paths can be tracked, including:
 
 ```text
 mods/
@@ -52,70 +124,156 @@ config/
 resourcepacks/
 shaderpacks/
 datapacks/
-
 options.txt
 servers.dat
 ```
 
-Tracked paths will become configurable in a future version.
+The architecture also allows CraftGit to work with completely generic directories.
 
 ---
 
-## Interface
+# Google Drive
 
-CraftGit uses a web-based frontend displayed inside a native desktop window through **pywebview**.
+Google Drive integration is optional.
 
-### Frontend
+It can be used to upload local snapshots as ZIP archives.
 
-```text
-HTML
-CSS
-JavaScript
-```
-
-### Backend
+Example:
 
 ```text
-Python
+Google Drive
+└── CraftGit
+    └── MyMinecraftInstance
+        ├── snapshot-2026-09-18.zip
+        ├── Before-Mod-Update.zip
+        └── Clean-Instance.zip
 ```
 
-The backend is responsible for filesystem operations, hashing, snapshot management, restoration, and application logic.
+## Auto Upload
 
-The frontend communicates with the Python backend through the application's local API.
+CraftGit includes an **Auto Upload** configuration section.
 
-### Screenshots
+Automatic uploading is **disabled by default**.
 
-Screenshots will be added when the interface reaches a stable development state.
+Connecting a Google account does **not** automatically enable uploads.
 
-#### Dashboard
+Default configuration:
 
-![CraftGit Dashboard](docs/screenshots/dashboard.png)
+```json
+{
+  "auto_upload": false,
+  "upload_backups": false,
+  "google_drive": {
+    "enabled": false,
+    "folder": "CraftGit"
+  }
+}
+```
 
-#### Snapshots
+The user must explicitly enable:
 
-![CraftGit Snapshots](docs/screenshots/snapshots.png)
+```text
+Automatically upload new snapshots
+```
 
-#### Changes
+or:
 
-![CraftGit Changes](docs/screenshots/changes.png)
+```text
+Automatically upload backups
+```
+
+Manual uploads remain available even when Auto Upload is disabled.
+
+---
+
+## Google Drive authentication
+
+CraftGit uses Google OAuth 2.0.
+
+The OAuth credentials are kept outside the source repository.
+
+The local token is stored in:
+
+```text
+%USERPROFILE%\.craftgit\google_token.json
+```
+
+The OAuth client file should be stored locally as:
+
+```text
+credentials.json
+```
+
+`credentials.json` and OAuth tokens should **never be committed to Git**.
+
+---
+
+## Desktop GUI
+
+CraftGit uses:
+
+* HTML
+* CSS
+* JavaScript
+* pywebview
+* Python backend
+
+The GUI is designed as a native-style desktop application while keeping the interface flexible and easy to develop.
+
+Planned interface sections include:
+
+```text
+Dashboard
+Snapshots
+Changes
+Auto Upload
+Settings
+```
+
+---
+
+## Project structure
+
+A simplified project structure:
+
+```text
+CraftGit/
+├── craftgit.py
+├── repository.py
+├── google_drive.py
+├── requirements.txt
+├── README.md
+├── LICENSE
+├── credentials.json
+└── web/
+    ├── index.html
+    ├── style.css
+    └── app.js
+```
+
+`credentials.json` is a local OAuth credential file and should not be committed.
 
 ---
 
 ## Installation
 
-### Public Release
-
-CraftGit is currently **not publicly released**.
-
-Official Windows `.exe` builds will be published through GitHub Releases when the project reaches its first stable release.
-
-### From Source
-
 Clone the repository:
 
 ```bash
-git clone https://github.com/ProgramerPro-Arch/CraftGit.git
+git clone https://github.com/ProgramerPro-arch/CraftGit.git
 cd CraftGit
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
 ```
 
 Install dependencies:
@@ -130,246 +288,187 @@ Run CraftGit:
 python craftgit.py
 ```
 
-The source structure and required dependencies may change during development.
-
 ---
 
-## Requirements
+## Google Drive setup
 
-### End Users
+Google Drive is optional.
 
-| Requirement         | Status                  |
-| ------------------- | ----------------------- |
-| Windows             | Planned                 |
-| Standalone `.exe`   | Planned                 |
-| Python installation | Not required for `.exe` |
-| Internet connection | Not required            |
+To enable it:
 
-### Development
-
-| Requirement | Version     |
-| ----------- | ----------- |
-| Python      | 3.11+       |
-| pywebview   | Required    |
-| Git         | Recommended |
----
-
-## Commands
-
-The graphical interface is intended to be the primary user interface.
-
-The CLI is currently intended mainly for development and automation.
-
-| Command              | Description              |
-| -------------------- | ------------------------ |
-| `init`               | Initialize CraftGit      |
-| `snapshot <name>`    | Create a snapshot        |
-| `list`               | List available snapshots |
-| `status`             | Display detected changes |
-| `restore <snapshot>` | Restore a snapshot       |
-
-Example:
-
-```bash
-python craftgit.py snapshot "Before mod update"
-```
-
----
-
-## Storage
-
-CraftGit stores its repository directly inside the Minecraft instance:
+1. Create a Google Cloud project.
+2. Enable the Google Drive API.
+3. Configure OAuth consent.
+4. Create a Desktop OAuth client.
+5. Download the credentials file.
+6. Save it as:
 
 ```text
-.minecraft/
-└── .craftgit/
-    └── snapshots/
-        ├── 2026-09-16-before-update/
-        │   ├── manifest.json
-        │   ├── mods/
-        │   └── config/
-        │
-        └── 2026-09-16-stable/
-            ├── manifest.json
-            ├── mods/
-            └── config/
+credentials.json
 ```
 
-Each snapshot contains a manifest describing the files included in that snapshot.
+7. Start CraftGit.
+8. Open **Auto Upload**.
+9. Select **Connect Google Drive**.
+10. Complete the Google OAuth flow.
 
-SHA-256 hashes are used to detect modifications and verify file state.
-
-Before a snapshot is restored, CraftGit creates a backup of the current instance state.
+Connecting the account alone does not enable automatic uploads.
 
 ---
 
-## Workflow
+## Command / backend operations
 
-A typical workflow:
+| Operation         | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| `create snapshot` | Creates a new snapshot                           |
+| `list snapshots`  | Lists local snapshots                            |
+| `delete snapshot` | Removes a snapshot                               |
+| `restore`         | Restores a snapshot                              |
+| `list backups`    | Lists restoration backups                        |
+| `status`          | Shows file changes                               |
+| `upload snapshot` | Manually uploads a snapshot                      |
+| `auto upload`     | Automatically uploads new snapshots when enabled |
+
+---
+
+## Data safety
+
+CraftGit is designed to keep the local repository as the primary copy.
+
+When a snapshot is created:
 
 ```text
-Create Snapshot
+Selected folder
       │
       ▼
-Modify Minecraft Instance
+Create local snapshot
       │
-      ▼
-Check Changes
+      ├── Auto Upload OFF
+      │       └── Done
       │
-      ├── No Issues
-      │
-      └── Something Changed
-               │
-               ▼
-        Restore Snapshot
-               │
-               ▼
-        Previous State
+      └── Auto Upload ON
+              │
+              ▼
+        Google Drive upload
 ```
 
-All snapshot data is stored locally.
+If Google Drive is unavailable, the local snapshot can still be created.
 
-CraftGit does not require a remote server or cloud storage for its core functionality.
+Cloud storage is an additional backup layer, not a replacement for the local repository.
 
 ---
 
-## Project Structure
+# Roadmap
 
-```text
-CraftGit/
-├── src/
-│   ├── backend/
-│   │   ├── snapshots/
-│   │   ├── filesystem/
-│   │   └── hashing/
-│   │
-│   └── gui/
-│       ├── index.html
-│       ├── css/
-│       └── js/
-│
-├── docs/
-│   └── screenshots/
-│       ├── dashboard.png
-│       ├── snapshots.png
-│       └── changes.png
-│
-├── craftgit.py
-├── requirements.txt
-├── LICENSE
-├── README.md
-└── .gitignore
-```
+## Core
 
-The project structure is subject to change during development.
-
----
-
-## Roadmap
-
-### Core
-
-* [x] Basic snapshot creation
+* [x] Snapshot creation
 * [x] Snapshot restoration
 * [x] SHA-256 hashing
-* [x] Pre-restore backups
-* [ ] Snapshot comparison
+* [x] Automatic pre-restore backups
+* [x] Snapshot deletion
+* [x] Backup management
+* [x] File change detection
 * [ ] Incremental snapshots
-* [ ] Deduplicated storage
-* [ ] Improved change detection
-* [ ] Improved deleted-file handling
+* [ ] Snapshot deduplication
+* [ ] Improved restore transactions
+* [ ] Repository integrity checking
 
-### Minecraft
+## Minecraft
 
-* [ ] Multiple instance support
+* [x] Minecraft-oriented file tracking
+* [ ] Multiple Minecraft instances
 * [ ] Configurable tracked paths
 * [ ] Mod metadata
-* [ ] Mod version tracking
-* [ ] Launcher detection
-* [ ] Modpack support
-* [ ] Instance profiles
+* [ ] Minecraft version detection
+* [ ] Mod loader detection
+* [ ] Launcher profile support
+* [ ] Modpack integration
 
-### GUI
+## Google Drive
 
-* [ ] Desktop interface
-* [ ] Snapshot browser
-* [ ] Change viewer
-* [ ] Settings
-* [ ] Dark / light themes
-* [ ] Drag & drop
+* [x] OAuth authentication
+* [x] Manual snapshot upload
+* [x] Automatic snapshot upload
+* [x] Configurable remote folder
+* [x] Backup upload support
+* [ ] Cloud snapshot browser
+* [ ] Cloud restore
+* [ ] Upload queue
+* [ ] Upload retry system
+* [ ] Cloud/local synchronization
+
+## GUI
+
+* [x] Desktop GUI
+* [x] Snapshot browser
+* [x] Change detection view
+* [x] Auto Upload configuration
+* [ ] Snapshot comparison viewer
+* [ ] Snapshot details
+* [ ] Search and filtering
+* [ ] Settings page
+* [ ] Themes
+* [ ] Drag and drop
 * [ ] Notifications
+* [ ] Upload progress UI
 
-### Distribution
+## Distribution
 
 * [ ] Windows `.exe`
 * [ ] Portable version
-* [ ] Installer
+* [ ] Windows installer
 * [ ] Automatic updates
 * [ ] First public release
 
 ---
 
-## Privacy
+# Project status
 
-CraftGit is designed around local operation.
+**Pre-release — active development**
 
-The core application does not require:
+CraftGit is currently being developed and tested.
 
-* an online account;
-* cloud storage;
-* uploading Minecraft files;
-* a permanent internet connection.
+There is currently no official public Windows `.exe` release.
 
-Minecraft files and snapshots remain on the user's machine unless manually copied elsewhere.
+The project structure, GUI and backend are still subject to change before the first public release.
 
 ---
 
-## Project Status
+# License
 
-**Pre-release — development**
+CraftGit is distributed under the:
 
-CraftGit is currently under active development and is **not yet available as a public release**.
+**CraftGit Attribution & Commercial License v1.0**
 
-There are currently no official public `.exe` builds.
+The license permits non-commercial use, modification, forks, branches and redistribution subject to the attribution requirements.
 
-The following components may change before the first release:
+Commercial use requires prior written permission from the copyright holder.
 
-* GUI
-* snapshot format
-* internal APIs
-* CLI
-* project structure
-* configuration format
-* storage format
+Copyright holder:
 
-The first official version will be published through GitHub Releases once development and testing are complete.
+```text
+Piotrekos69
+```
 
----
+See [`LICENSE`](LICENSE) for the complete terms.
 
-## License
-
-CraftGit is distributed under the **CraftGit Attribution & Commercial License v1.0**.
-
-Non-commercial use, modification, forks, branches, and redistribution are permitted according to the license terms.
-
-**Commercial use requires prior permission from the copyright holder.**
-
-Required author and project attribution must be preserved in derivative works.
-
-See [`LICENSE`](LICENSE) for the complete license terms.
+> This is a custom license and is not intended to be an SPDX-standard open-source license.
 
 ---
 
-## Author
+# Author
 
 **Piotrekos69**
 
+CraftGit is developed as an independent project focused on practical version control for Minecraft instances and local game data.
+
 ---
 
-<div align="center">
+# Repository
 
-CraftGit is an independent project.
+Source code:
 
-Not affiliated with Mojang Studios, Microsoft, Modrinth, or CurseForge.
+https://github.com/ProgramerPro-arch/CraftGit
 
-</div>
+CraftGit is currently a development project and is not yet considered a stable public release.
